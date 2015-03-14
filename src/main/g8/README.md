@@ -2,9 +2,8 @@
 
 ## Overview
 
-A new Scala framework for _________
+A Syncordia Cloud Microservice
 
-## Goals
+## Domain
+...
 
-- Make X easier
-- Do Y better

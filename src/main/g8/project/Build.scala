@@ -12,43 +12,60 @@ addCommandAlias("rebuild", ";clean; compile; package")
 //////////////////////////////////////////////////////////////////////////////
 // PROJECTS
 //////////////////////////////////////////////////////////////////////////////
-	lazy val $context$ = Project(id = "$context$",
+	lazy val $name;format="snake"$ = Project(id = "$name;format="Camel"$",
                               base = file("."),
                               settings = commonSettings) aggregate(
                                 persistence,
                               	core,
-                                biz,
+                                domain,
                               	protocol,
                               	transport)
 
-	lazy val persistence = Project(id = "$context$-persistence",
-                              	settings = commonSettings,
+  lazy val persistence = Project(id = "$name;format="normalize"$-persistence",
+                                 settings = commonSettings ++ Seq(
+                                  libraryDependencies ++= Seq(
+                                  
+                                  )
+                                 ),
                                  base = file("persistence")) dependsOn (protocol)
 
-	lazy val core = Project(id = "$context$-core",
-                              	settings = commonSettings,
-                                 base = file("core")) dependsOn (
-                                   persistence,
-                                   biz,
-                                   protocol)
+	lazy val core = Project(id = "$name;format="normalize"$-core",
+                        	settings = commonSettings ++ Seq(
+                            libraryDependencies ++= Seq(
 
-	lazy val biz = Project(id = "$context$-biz",
-                              	settings = commonSettings,
-                                 base = file("biz")) dependsOn (protocol)
+                            )
+                          ),
+                          base = file("core")) dependsOn (
+                            persistence,
+                            domain,
+                            protocol,
+                            transport
+                          )
+
+	lazy val domain = Project(id = "$name;format="normalize"$-domain",
+                           	settings = commonSettings ++ Seq(
+                              libraryDependencies ++= Seq(
+                              "org.scalacheck" %% "scalacheck" % "1.11.6" % "test"
+                              )
+                            ),
+                            base = file("domain")) dependsOn (protocol)
   
-	lazy val protocol = Project(id = "$context$-protocol",
-                              	settings = commonSettings,
-                                 base = file("protocol"))
+	lazy val protocol = Project(id = "$name;format="normalize"$-protocol",
+                              settings = commonSettings,
+                              base = file("protocol"))
   
-	lazy val transport = Project(id = "$context$-transport",
-                              	settings = commonSettings,
-                                 base = file("transport")) dependsOn(protocol)
+	lazy val transport = Project(id = "$name;format="normalize"$-transport",
+                               settings = commonSettings ++ Seq(
+                                 libraryDependencies ++= Seq(
+                                 )
+                               ),
+                               base = file("transport")) dependsOn(protocol)
   
 //////////////////////////////////////////////////////////////////////////////
 // PROJECT INFO
 //////////////////////////////////////////////////////////////////////////////
 
-  val ORGANIZATION    = "$package$"
+  val ORGANIZATION    = "$organization$"
   val PROJECT_NAME    = "$name;format="normalize"$"
   val PROJECT_VERSION = "0.1-SNAPSHOT"
   val SCALA_VERSION   = "2.11.4"
@@ -81,6 +98,7 @@ addCommandAlias("rebuild", ";clean; compile; package")
     libraryDependencies ++= Seq(
       "com.typesafe"     % "config"          % TYPESAFE_CONFIG_VERSION,
       "org.slf4j"        % "slf4j-api"       % SLF4J_VERSION,
+      "com.github.nscala-time"       %% "nscala-time" % "1.6.0",
       "ch.qos.logback"   % "logback-classic" % LOGBACK_VERSION % "runtime",
       "org.scalatest"   %% "scalatest"       % SCALATEST_VERSION % "test"
     ),
@@ -120,9 +138,5 @@ addCommandAlias("rebuild", ";clean; compile; package")
       .setPreference(SpacesWithinPatternBinders, true)
       .setPreference(FormatXml, true)
   )
-
-
   
-//credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
-
 }

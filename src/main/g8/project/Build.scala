@@ -110,7 +110,7 @@ addCommandAlias("rebuild", ";clean; compile; package")
     ),
 
     javaOptions += "-Djava.library.path=%s:%s".format(
-      sys.props("java.library.path")
+      sys.props("java.library.path"),sys.props("java.library.path")
     ),
 
     fork in run := true,

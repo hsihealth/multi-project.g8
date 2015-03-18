@@ -1,3 +1,3 @@
-package $package$.$context$.protocol
+package $package$.protocol
 
 
